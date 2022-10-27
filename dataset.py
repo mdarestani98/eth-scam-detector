@@ -54,15 +54,15 @@ class Normalize(Transform):
         else:
             assert len(mean) == len(std)
         mean = np.array(mean)
-        self.mean = torch.from_numpy(mean).view((-1, 1)).to(device)
+        self.mean = torch.from_numpy(mean).view((-1,)).to(device)
         if std is not None:
             std = np.array(std)
-            self.std = torch.from_numpy(std).view((-1, 1)).to(device)
+            self.std = torch.from_numpy(std).view((-1,)).to(device)
         else:
             self.std = std
 
     def __call__(self, features: Tensor, **kwargs) -> Tensor:
-        features = features.view((-1, 1))
+        features = features.view((-1,))
         if self.std is None:
             features.sub_(self.mean)
         else:
