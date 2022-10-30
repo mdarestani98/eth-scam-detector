@@ -6,27 +6,27 @@ class FCN(nn.Module):
     def __init__(self, in_features: int, no_classes: int):
         super(FCN, self).__init__()
         self.layer0 = nn.Sequential(
-            nn.Linear(in_features, 32, bias=False),
-            nn.BatchNorm1d(32, momentum=0.9),
-            nn.LeakyReLU(0.1, inplace=True),
+            nn.Linear(in_features, 48, bias=False),
+            nn.BatchNorm1d(48, momentum=0.9),
+            nn.ReLU(inplace=True),
         )
         self.layer1 = nn.Sequential(
-            nn.Linear(32, 48, bias=False),
-            nn.BatchNorm1d(48, momentum=0.9),
-            nn.LeakyReLU(0.1, inplace=True),
+            nn.Linear(48, 64, bias=False),
+            nn.BatchNorm1d(64, momentum=0.9),
+            nn.ReLU(inplace=True),
         )
         self.dropout = nn.Dropout(p=0.1)
         self.layer2 = nn.Sequential(
-            nn.Linear(48, 64, bias=False),
-            nn.BatchNorm1d(64, momentum=0.9),
-            nn.LeakyReLU(0.1, inplace=True),
-        )
-        self.layer3 = nn.Sequential(
-            nn.Linear(64, 16, bias=False),
-            nn.BatchNorm1d(16, momentum=0.9),
+            nn.Linear(64, 96, bias=False),
+            nn.BatchNorm1d(96, momentum=0.9),
             nn.ReLU(inplace=True),
         )
-        self.cls = nn.Linear(16, no_classes, bias=False)
+        self.layer3 = nn.Sequential(
+            nn.Linear(96, 32, bias=False),
+            nn.BatchNorm1d(32, momentum=0.9),
+            nn.ReLU(inplace=True),
+        )
+        self.cls = nn.Linear(32, no_classes, bias=False)
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.layer0(x)
